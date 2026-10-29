@@ -1,0 +1,37 @@
+# traffic-vision default configuration.
+#
+# The counting line and the speed-calibration region use normalised
+# coordinates in [0, 1] (x = fraction of frame width, y = fraction of frame
+# height), so the same file works at any video resolution.
+
+source: data/traffic.mp4      # video file, RTSP/HTTP stream, or webcam index ("0")
+output_dir: runs/latest
+classes: [car, motorcycle, bus, truck]   # COCO class names to track
+save_video: true
+show: false
+trail_length: 30              # frames of motion history drawn behind each vehicle
+
+model:
+  weights: yolov8n.pt         # any Ultralytics detection checkpoint (v8 / 11, n-x, or custom)
+  conf: 0.35
+  iou: 0.5
+  imgsz: 640
+  device: null                # null = auto; or "cpu", "0", "cuda:0", "mps"
+  tracker: bytetrack.yaml     # or botsort.yaml
+
+line:
+  # A directed segment. Crossing from its right-hand side to its left-hand
+  # side (facing start -> end) counts as "in". For this left-to-right line,
+  # vehicles moving UP the frame are "in" and vehicles moving DOWN are "out".
+  start: [0.05, 0.60]
+  end: [0.95, 0.60]
+
+speed:
+  enabled: false
+  # Four corners of a real rectangle on the road surface, ordered top-left,
+  # top-right, bottom-right, bottom-left as they appear in the frame. Measure
+  # these for your camera: lane markings and lane widths are good references.
+  region: [[0.35, 0.40], [0.65, 0.40], [0.95, 0.95], [0.05, 0.95]]
+  width_m: 10.5               # real width of the rectangle (e.g. three 3.5 m lanes)
+  length_m: 30.0              # real length along the direction of travel
+  window_s: 0.5               # time window each speed estimate is averaged over
