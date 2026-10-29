@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+
+# run artefacts and media
+runs/
+data/
+*.mp4
+*.avi
+*.mov
+*.pt

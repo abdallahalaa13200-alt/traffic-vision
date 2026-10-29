@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "traffic-vision"
+version = "0.1.0"
+description = "Vehicle detection, multi-object tracking, line-crossing counts and speed estimation from video."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Abdallah Alaa" }]
+keywords = ["computer-vision", "object-detection", "object-tracking", "yolo", "bytetrack", "traffic"]
+dependencies = [
+    "ultralytics>=8.1",
+    "lap>=0.5.12",  # linear assignment solver ByteTrack needs; Ultralytics doesn't pin it
+    "opencv-python>=4.8",
+    "numpy>=1.23",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4", "ruff>=0.4"]
+
+[project.scripts]
+traffic-vision = "traffic_vision.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
